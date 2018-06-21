@@ -2,7 +2,7 @@ version: '3'
 services:
     app:
         build:
-            context: ./app
+            context: ./docker/app
             dockerfile: ./Dockerfile
         image: jarlskov-docker/app:latest
         networks:
@@ -23,6 +23,17 @@ services:
             - appnet
         volumes:
             - dbdata:/var/lib/mysql
+    node:
+        build:
+            context: ./docker/node
+            dockerfile: ./Dockerfile
+        image: jarlskov-docker/node
+        networks:
+            - appnet
+        volumes:
+            - ./:/opt
+        working_dir: /opt
+        command: ''
 networks:
     appnet:
         driver: bridge
