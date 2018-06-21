@@ -1,0 +1,31 @@
+version: '3'
+services:
+    app:
+        build:
+            context: ./app
+            dockerfile: ./Dockerfile
+        image: jarlskov-docker/app:latest
+        networks:
+            - appnet
+        volumes:
+            - ./:/var/www/html
+        ports:
+            - 80:80
+        working_dir: /var/www/html
+    db:
+        image: mysql:5.7
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: app
+            MYSQL_USER: dbuser
+            MYSQL_PASSWORD: dbpassword
+        networks:
+            - appnet
+        volumes:
+            - dbdata:/var/lib/mysql
+networks:
+    appnet:
+        driver: bridge
+volumes:
+    dbdata:
+        driver: local
